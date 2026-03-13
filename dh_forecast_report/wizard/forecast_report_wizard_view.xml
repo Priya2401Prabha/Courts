@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_stock_forecast_wizard_form" model="ir.ui.view">
+		<field name="name">stock.forecast.wizard.form</field>
+		<field name="model">stock.forecast.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Stock Forecast Wizard1">
+				<sheet>
+					<group>
+						<group>
+							<field name="product_ids" widget="many2many_tags" domain="[('is_storable','=',True)]" readonly="category_id"/>
+							<field name="forecast_method"/>
+							<field name="date_range_type" invisible="forecast_method == 'reorder_rule'" required="forecast_method != 'reorder_rule'"/>
+							<field name="date_from" readonly="date_range_type != 'custom'" force_save="1" invisible="forecast_method == 'reorder_rule'" required="forecast_method != 'reorder_rule'"/>
+							<label for="horizon_days"  string="Horizon Days" invisible="forecast_method == 'reorder_rule'" />
+                            <div name="horizon_days" class="o_row">
+                                <field name="horizon_days" invisible="forecast_method == 'reorder_rule'" required="forecast_method != 'reorder_rule'"/>
+                                <!-- <span>Horizon Days</span> -->
+                                <div class="o_row oe_inline">
+                                    <field name="horizon_unit" class="oe_inline" style="max-width: 60px;" invisible="forecast_method == 'reorder_rule'" required="forecast_method != 'reorder_rule'"/>
+                                    
+                                </div>
+                            </div>
+						</group>
+						<group>
+							<field name="category_id" readonly="product_ids"/>
+                            <field name="buffer_stock" invisible="forecast_method == 'reorder_rule'"/>
+							<field name="type_of_consumption" invisible="forecast_method == 'reorder_rule'" required="forecast_method != 'reorder_rule'"/>
+							<field name="date_to" readonly="date_range_type != 'custom'" force_save="1" invisible="forecast_method == 'reorder_rule'" required="forecast_method != 'reorder_rule'"/>
+						</group>
+					</group>
+					<footer>
+						<button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+						<button string="Cancel" special="cancel"/>
+				</footer>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+
+	<record id="action_stock_forecast_wizard" model="ir.actions.act_window">
+	<field name="name">Forecast Report</field>
+	<field name="res_model">stock.forecast.wizard</field>
+	<field name="view_mode">form</field>
+	<field name="target">new</field>
+	</record>
+
+
+	<menuitem id="menu_stock_forecast_wizard" name="Forecast" parent="stock.menu_warehouse_report" action="action_stock_forecast_wizard" sequence="5"/>
+</odoo>

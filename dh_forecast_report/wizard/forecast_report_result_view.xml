@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_stock_forecast_result_based_on_history_tree" model="ir.ui.view">
+		<field name="name">stock.forecast.result.based.on.history.tree</field>
+		<field name="model">stock.forecast.result</field>
+		<field name="arch" type="xml">
+			<list string="Forecast Results">
+				<field name="product_id" width="300" widget="many2one"/>
+				<field name="average_daily" width="170"/>
+				<field name="current_available_qty" width="100"/>
+				<field name="sold_qty" sum="Total Sold Qty." width="100"/>
+				<field name="mrp_consumed_qty" sum="Total MRP Consumec Qty." width="150"/>
+				<field name="forecasted_demand" width="140"/>
+				<field name="can_serve_days" sum="Total Can Serve Days." width="150"/>
+				<field name="required_qty" width="200"/>
+				<button name="action_create_rfq" type="object" string="Create RFQ" invisible="required_qty == 0"/>
+				<button name="action_create_mo" type="object" string="Create MO" invisible="required_qty == 0"/>
+			</list>
+		</field>
+	</record>
+
+	<record id="view_stock_forecast_result_based_on_reorder_rules_tree" model="ir.ui.view">
+		<field name="name">stock.forecast.result.based.on.reorder.rules.tree</field>
+		<field name="model">stock.forecast.result</field>
+		<field name="arch" type="xml">
+			<list string="Forecast Results">
+				<field name="product_id" widget="many2one"/>
+				<field name="current_available_qty" width="200"/>
+				<field name="forecasted_demand"  width="200"/>
+				<field name="required_qty" width="200"/>
+				<button name="action_create_rfq" type="object" string="Create RFQ" invisible="required_qty == 0"/>
+				<button name="action_create_mo" type="object" string="Create MO" invisible="required_qty == 0"/>
+			</list>
+		</field>
+	</record>
+
+
+	<record id="action_stock_forecast_result_tree" model="ir.actions.act_window">
+		<field name="name">Forecast Results</field>
+		<field name="res_model">stock.forecast.result</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+	<record id="action_generate_rfq" model="ir.actions.server">
+        <field name="name">Generate RFQ</field>
+        <field name="model_id" ref="dh_forecast_report.model_stock_forecast_result"/>
+        <field name="binding_model_id" ref="dh_forecast_report.model_stock_forecast_result"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_create_rfq()</field>
+    </record>
+
+    <record id="action_generate_mo" model="ir.actions.server">
+        <field name="name">Generate MO</field>
+        <field name="model_id" ref="dh_forecast_report.model_stock_forecast_result"/>
+        <field name="binding_model_id" ref="dh_forecast_report.model_stock_forecast_result"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_create_mo()</field>
+    </record>
+</odoo>
