@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="product_category_form_view" model="ir.ui.view">
+        <field name="name">product.category.form.view</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <button name="action_generate_all_child_sequences"
+                        type="object"
+                        string="Generate Child Sequence"
+                        class="btn-primary"
+                        invisible="parent_id"/>
+            </xpath>
+            <group name="first" position="inside">
+                <field name="sequence_mode" string="Sequence generate mode" readonly="parent_id"/>
+            </group>
+            <group name="first" position="after">
+                <group>
+                    <group string="Sequence" name="sequence" invisible="sequence_mode in ['manual']">
+                        <field name="category_code" required="sequence_mode in ['automatic']"/>
+                        <field name="sequence_id" readonly="1"/>
+                        <field name="sequence_lock" readonly="1" invisible="1"/>
+                    </group>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

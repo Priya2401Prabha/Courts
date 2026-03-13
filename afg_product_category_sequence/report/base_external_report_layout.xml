@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="external_layout_standard_afg" inherit_id="web.external_layout_standard">
+
+        <!-- ================= HEADER REPLACEMENT ================= -->
+        <xpath expr="//div[contains(@t-attf-class,'o_company_')]" position="replace">
+            <div t-attf-class="header o_company_#{company.id}_layout">
+
+                <style>
+                    .no-border { border: 0 !important; }
+                    .border-bottom {
+                    border-top: 0 !important;
+                    border-bottom: 1px solid #000 !important;
+                    }
+                    table.signature { font-size: 13px; }
+                </style>
+
+                <!-- VAT INVOICE TITLE -->
+                <div t-if="o and o._name == 'account.move'                            and o.move_type == 'out_invoice'and company.name == 'AFG Furniture Group'">
+                    <!--                           and o.state == 'posted'-->
+                    <!--                           and o.partner_id.vat">-->
+                    <table class="table table-borderless">
+                        <tr t-if="company.name == 'AFG Furniture Group'">
+                            <td width="50%"/>
+                            <td width="50%" class="text-end">
+                                <h2>VAT INVOICE</h2>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- COMPANY HEADER -->
+                <table class="table table-borderless" style="padding-bottom:5px;">
+                    <tr>
+                        <t t-if="company.name == 'IMF'">
+                            <td width="60%" style="padding-top:15px;">
+                                <img style="border: 1px solid black; padding:1px; max-height:150px;" t-if="company.logo"
+                                     t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                            </td>
+                        </t>
+
+                        <t t-else="">
+                            <td width="60%" class="no-border">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+                                     style="max-height:150px;" alt="Logo"/>
+                            </td>
+                        </t>
+                        <!--                        <td width="40%" style="font-size:13px;" class="no-border">-->
+                        <!--                        <t t-set="company" t-value="company or (o and o.company_id)"/>-->
+                        <t t-if="company.name == 'IMF'">
+                            <td width="40%"
+                                style="font-size:15px; text-align:left; padding-left:50px; padding-top:15px; vertical-align:top;line-height:1.6;">
+                                <t t-set="company"
+                                   t-value="company or (o and (o.company_id.parent_id or o.company_id)) or env.company"/>
+
+                                <t t-if="company and company._fields.get('x_display_address') and company.x_display_address">
+                                    <span t-esc="company.x_display_address"
+                                          t-options="{&quot;widget&quot;: &quot;text&quot;}"/>
+                                </t>
+
+
+                            </td>
+                        </t>
+                        <t t-else="">
+                            <td width="40%"
+                                style="font-size:15px; text-align:left; vertical-align:top;line-height:1.6;">
+                                <t t-set="company"
+                                   t-value="company or (o and (o.company_id.parent_id or o.company_id)) or env.company"/>
+
+                                <t t-if="company and company._fields.get('x_display_address') and company.x_display_address">
+                                    <span t-esc="company.x_display_address"
+                                          t-options="{&quot;widget&quot;: &quot;text&quot;}"/>
+                                </t>
+
+
+                            </td>
+                        </t>
+
+                    </tr>
+                </table>
+            </div>
+
+            <div t-if="o and o._name == 'account.move'                            and o.move_type == 'out_invoice'and company.name == 'AFG Furniture Group'">
+                <!--                           and o.state == 'posted'-->
+                <!--                           and o.partner_id.vat">-->
+                <table class="table table-borderless">
+                    <tr t-if="company.name == 'IMF'">
+                        <td width="50%"/>
+                        <td width="50%" class="text-end">
+                            <h2>VAT INVOICE</h2>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </xpath>
+
+
+        <!--         ================= FOOTER / SIGNATURE SECTION ================= -->
+
+        <!--        <xpath expr="//div[contains(@class, 'text-end text-muted')]" position="replace">-->
+        <xpath expr="//div[contains(@t-attf-class, 'footer o_company')]" position="replace">
+            <div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'mt-auto'}}"
+                 style="padding-bottom:2em; padding-top:2em">
+                <div t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+                     t-att-data-oe-lang="o and o.env.context.get('lang')">
+                    <!--<div t-if="o and o._name == 'stock.picking' and o.picking_type_id.code == 'outgoing'" style="padding-bottom: 200px;">-->
+                    <div t-if="o and o._name == 'stock.picking' and xmlid == 'stock.report_deliveryslip'"
+                         style="padding-bottom: 400px;">
+                        <div>
+
+                            <table class="table table-borderless">
+
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <b>Sending Location</b>
+                                        </th>
+                                        <th colspan="2">
+                                            <b>Receiving Location</b>
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td width="25%">Vehicle No</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+                                        </td>
+
+                                        <td width="25%">Goods Received By</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">Driver Name</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+
+                                        <td width="25%">Sign</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">Goods Loaded By</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+
+                                        <td width="25%">Date</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">Posted By</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+                                        <td width="25%"/>
+                                        <td width="25%"/>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">Approved By</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+                                        <td width="25%"/>
+                                        <td width="25%"/>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="25%">Sign</td>
+                                        <td width="25%" style="border-bottom:1px solid #000;">
+
+                                        </td>
+                                        <td width="25%"/>
+                                        <td width="25%"/>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <!-- ================= INTERNAL TRANSFER ================= -->
+                    <!--<div t-if="o and o._name == 'stock.picking' and o.picking_type_code == 'internal'">-->
+                    <div t-if="o and o._name == 'stock.picking' and xml_id == 'stock.report_picking'"
+                         style="padding-bottom: 400px;">
+                        <div>
+                            <table class="table table-borderless signature"
+                                   t-if="o.picking_type_id.name == 'Pick Components'">
+                                <tr>
+                                    <td width="25%">Issued By</td>
+                                    <td width="25%" class="border-bottom"/>
+                                    <td width="25%">Received By</td>
+                                    <td width="25%" class="border-bottom"/>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--</div>-->
+
+
+                        <!-- ================= RECEIPT ================= -->
+                        <!--<div t-if="o and o._name == 'stock.picking' and o.picking_type_code == 'incoming'">-->
+                        <!--<div t-if="o and o._name == 'stock.picking' and report_xml_id == 'stock.report_picking'" -->
+                        <!--style="padding-bottom: 400px;">-->
+                        <table class="table table-borderless signature" t-if="o.picking_type_id.name == 'Receipts'">
+                            <tr>
+                                <td width="25%">Received By</td>
+                                <td width="25%" class="border-bottom"/>
+                                <td width="25%">Approved By</td>
+                                <td width="25%" class="border-bottom"/>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!--                    ================= INVOICE SIGNATURE =================-->
+                    <div t-if="o and o._name == 'account.move' and o.move_type in ('out_invoice', 'out_refund') and o.company_id.name != 'IMF'">
+
+                        <table class="table table-borderless">
+                            <tr>
+                                <td width="50%">Prepared By:</td>
+                                <td width="50%">Approved By:</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div t-if="o and o._name == 'account.move' and o.move_type in ('out_invoice', 'out_refund') and o.company_id.name == 'IMF'">
+
+                        <table class="table table-borderless">
+                            <tr>
+                                <td width="50%" class="text-center">...........................................<br/>MTL
+                                    Manufacturing Ltd
+                                </td>
+                                <td width="50%" class="text-center">...............................<br/>Purchaser
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="o_footer_content d-flex border-top pt-2">
+                    <div class="flex-grow-1 text-center me-2" t-field="company.report_footer"/>
+                    <div class="text-center text-muted">
+                        <div t-if="report_type == 'pdf' and display_name_in_footer" t-out="o.name"/>
+                        <div t-if="report_type == 'pdf'" class="text-nowrap">
+                            Page
+                            <span class="page"/>
+                            /
+                            <span class="topage"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </xpath>
+
+    </template>
+
+    <!--    <template id="assets_report_inherit" inherit_id="web.report_assets_common">-->
+    <!--        <xpath expr="." position="inside">-->
+    <!--            <style>-->
+    <!--                .o_company_custom_layout {-->
+    <!--                padding-top: 40px !important;-->
+    <!--                padding-bottom: 40px !important;-->
+    <!--                min-height: 150px;-->
+    <!--                }-->
+    <!--            </style>-->
+    <!--        </xpath>-->
+    <!--    </template>-->
+</odoo>

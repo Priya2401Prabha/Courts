@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="document_tax_totals_inherit"
+              inherit_id="account.document_tax_totals">
+
+        <!-- Replace Untaxed Amount label -->
+        <xpath expr="//span[@t-out=&quot;subtotal['name']&quot;]" position="replace">
+            <span>Subtotal</span>
+        </xpath>
+
+    </template>
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="afg_delivery_slip_paperformat_id" model="report.paperformat">
+        <field name="name">A4/Delivery Slip</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">40</field>
+        <field name="margin_bottom">75</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="afg_product_barcode_paperformat_id" model="report.paperformat">
+        <field name="name">Product Barcode</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">50</field>
+        <field name="page_width">100</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">1</field>
+        <field name="margin_bottom">1</field>
+        <field name="margin_left">1</field>
+        <field name="margin_right">1</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="afg_invoice_paperformat_id" model="report.paperformat">
+        <field name="name">Invoice A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">55</field>
+        <field name="margin_bottom">32</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">55</field>
+        <field name="dpi">95</field>
+    </record>
+</odoo>
