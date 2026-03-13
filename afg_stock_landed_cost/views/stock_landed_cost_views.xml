@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit Stock Landed Cost Form -->
+    <record id="inherit_view_stock_landed_cost_form" model="ir.ui.view">
+        <field name="name">stock.landed.cost.form.inherit</field>
+        <field name="model">stock.landed.cost</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Add new statusbar states -->
+            <xpath expr="//form//header//field[@name='state']" position="attributes">
+                <attribute name="statusbar_visible">draft,approval,approved,done</attribute>
+            </xpath>
+
+            <!-- Header buttons states -->
+            <xpath expr="//form//header//button[@name='button_cancel']" position="attributes">
+                <attribute name="invisible">"state not in 'draft','approval','reject','approved'"</attribute>
+            </xpath>
+            <xpath expr="//form//header//button[@name='button_validate']" position="replace">
+                <button name="button_draft" string="Set to Draft" invisible="state  not in ['cancel','reject']"
+                        class="oe_highlight"
+                        type="object"/>
+                <button name="button_approval" string="Approval" invisible="state != 'draft'" class="oe_highlight"
+                        type="object"/>
+                <button name="button_reject" string="Reject" invisible="state not in ['approval','approved']"
+                        class="oe_highlight"
+                        type="object"/>
+                <button name="button_approved" string="Approved" invisible="state not in ['approval']"
+                        groups="afg_stock_landed_cost.landed_cost_manager" class="oe_highlight" type="object"/>
+                <button name="button_validate" string="Validate" invisible="state != 'approved'" class="oe_highlight"
+                        type="object"/>
+<!--                <button name="compute_insurance_cost" string="Compute Insurance" invisible="state != 'draft'"-->
+                <button name="compute_insurance_new" string="Compute Insurance" invisible="state != 'draft'"
+                        class="oe_highlight"
+                        type="object"/>
+            </xpath>
+
+            <!-- Extra fields after journal -->
+            <xpath expr="//field[@name='account_journal_id']" position="after">
+                <field name="post_date"/>
+                <field name="currency_id" readonly="1" groups="base.group_multi_currency"/>
+                <field name="user_id" readonly="state in ['done']"/>
+                <!--                    <field name="user_id" readonly="state in ['done']" attrs="{'readonly': [('state', '=', 'done')]}"/>-->
+            </xpath>
+
+            <!-- list view adjustments -->
+            <!--                <xpath expr="//list/field[@name='price_unit']" position="before">-->
+            <xpath expr="//notebook//page[@name='additional_costs']//field[@name='cost_lines']//list//field[@name='price_unit']"
+                   position="before">
+                <field name="currency_price_unit" readonly="split_method in ['by_percentage']"/>
+<!--                <field name="currency_price_unit" readonly="split_method in ['by_percentage']"/>-->
+                <field name="currency_id" column_invisible="1"/>
+            </xpath>
+
+            <xpath expr="//group[@class='oe_subtotal_footer']//field[@name='currency_id']"
+                   position="replace">
+                <field name="company_currency_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//group[@class='oe_subtotal_footer']//field[@name='amount_total']"
+                   position="replace">
+                <field name="amount_total_comp_currency" widget="monetary"
+                       options="{'currency_field': 'company_currency_id'}"/>
+            </xpath>
+
+            <!-- Additional fields -->
+            <xpath expr="//field[@name='picking_ids']" position="after">
+                <field name="currency_exchange_rate" readonly="state in ['done']"/>
+                <!--                    <field name="currency_exchange_rate"  readonly="state in ['done']" attrs="{'readonly':[('state','in',['done'])]}"/>-->
+                <field name="insurance_amount" readonly="state in ['done']"/>
+                <!--                    <field name="insurance_amount" readonly="state in ['done']" attrs="{'readonly':[('state','in',['done'])]}"/>-->
+            </xpath>
+
+            <!--            <xpath expr="//button[@name='compute_landed_cost']" position="attributes">-->
+            <!--                <attribute name="invisible">"state not in ['draft','approval','approved']"</attribute>-->
+            <!--            </xpath>-->
+
+            <!-- Valuation lines extra fields -->
+<!--            <xpath expr="//notebook//page[@name='additional_costs']//field[@name='cost_lines']//list//field[@name='split_method']"-->
+<!--                   position="after">-->
+<!--                <field name="usd_currency_id"/>-->
+<!--                <field name="usd_amount"/>-->
+
+<!--            </xpath>-->
+            <xpath expr="//notebook//page[@name='valuation_adjustments']//field[@name='valuation_adjustment_lines']//form//group//group//field[@name='quantity']"
+                   position="after">
+                <field name="purchase_cost"/>
+                <field name="unit_cost"/>
+                <field name="casting_rate"/>
+                <field name="casting_rate_amount"/>
+                <field name="purchase_casting_us"/>
+            </xpath>
+            <xpath expr="//notebook//page[@name='valuation_adjustments']//field[@name='valuation_adjustment_lines']//list//field[@name='quantity']"
+                   position="after">
+                <field name="purchase_cost"/>
+                <field name="unit_cost"/>
+                <field name="casting_rate"/>
+                <field name="casting_rate_amount"/>
+                <field name="purchase_casting_us"/>
+            </xpath>
+
+            <!-- Cost Valuation Lines notebook page -->
+            <xpath expr="//notebook//page[@name='valuation_adjustments']" position="after">
+                <page string="Cost Valuation Lines" name="cost_valuation_lines">
+                    <field name="cost_valuation_lines">
+                        <form string="Cost Valuations">
+                            <group>
+                                <group>
+                                    <field name="p_code" readonly="1"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="uom_id" readonly="1"/>
+                                    <field name="quantity" readonly="1"/>
+                                    <field name="unit_volume" readonly="1"/>
+                                    <field name="volume" readonly="1"/>
+                                    <field name="purchase_currency_id" invisible="1"/>
+                                    <field name="company_currency_id" invisible="1"/>
+                                    <field name="purchase_cost" readonly="1"/>
+                                    <field name="purchase_casting_us" readonly="1"/>
+                                    <field name="purchase_casting_rs" readonly="1"
+                                           options="{'currency_field':'company_currency_id'}"/>
+                                </group>
+                                <group>
+                                    <field name="freight_charge_amount" readonly="1"/>
+                                    <field name="local_charge_amount" readonly="1"/>
+                                    <field name="duty_rate" readonly="0"/>
+                                    <field name="duty_charge_amount" readonly="0"/>
+                                    <field name="fumigation_charge_amount" readonly="1"/>
+                                    <field name="others_charge_amount" readonly="1"/>
+                                    <field name="insurance_charge_amount" readonly="1"/>
+                                    <field name="total_cost" readonly="1"/>
+                                    <field name="total_cost_with_insurance" readonly="1"/>
+                                    <field name="landed_cost_per_unit" readonly="1"/>
+                                </group>
+                            </group>
+                        </form>
+                        <list name="cost_valuations" string="Cost Valuation" editable="bottom" create="0">
+                            <field name="p_code" optional="hide" readonly="1"/>
+                            <field name="name" optional="show" readonly="1"/>
+                            <field name="product_id" optional="hide" readonly="1" invisible="1"/>
+                            <field name="uom_id" optional="hide" readonly="1"/>
+                            <field name="weight" readonly="1" optional="hide" sum="Total Weight"/>
+                            <field name="quantity" readonly="1" optional="show" sum="Total Quantity"/>
+                            <field name="unit_volume" readonly="1" optional="hide" sum="Total Unit Volume"/>
+                            <field name="volume" readonly="1" optional="hide" sum="Total Volume"/>
+                            <field name="unit_cost" optional="show" readonly="1" sum="Total Unit Cost"/>
+                            <field name="purchase_cost" optional="show" readonly="1" sum="Total Purchase Cost"/>
+                            <field name="purchase_currency_id" column_invisible="1"/>
+                            <field name="company_currency_id" column_invisible="1"/>
+                            <field name="purchase_casting_us" readonly="1" sum="Total Cost US"/>
+                            <field name="fumigation_charge_amount" readonly="1" optional="hide"
+                                   sum="Total Fumigation Charge"/>
+                            <field name="purchase_casting_rs" optional="show" readonly="1"
+                                   options="{'currency_field':'company_currency_id'}" sum="Total Cost Rs"/>
+                            <field name="freight_charge_amount" optional="show" readonly="1"
+                                   sum="Total Freight Charge"/>
+                            <field name="duty_rate" readonly="0" optional="hide" sum="Total Duty Rate"/>
+                            <field name="duty_charge_amount" readonly="0" optional="show" sum="Total Duty Charge"/>
+                            <field name="local_charge_amount" optional="show" readonly="1" sum="Total Local Charge"/>
+                            <field name="others_charge_amount" readonly="1" optional="hide" sum="Total Others Charge"/>
+                            <field name="total_cost" readonly="1" optional="show" sum="Total Cost"/>
+                            <field name="insurance_charge_amount" optional="show" readonly="1"
+                                   sum="Total Insurance Charge"/>
+                            <field name="total_cost_with_insurance" optional="show" readonly="1"
+                                   sum="Total Cost with Insurance"/>
+                            <field name="landed_cost_per_unit" optional="show" readonly="1" sum="Unit Cost"/>
+                            <field name="landed_cost_per_unit" readonly="1" sum="Total Landed Cost Rs"/>
+                            <field name="landed_cost_per_unit_us" readonly="1" sum="Total Landed Cost $"/>
+                            <field name="factor_us_unit_cost" readonly="1" sum="Total Factor $"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="stock_landed_cost_xlsx"
+            model="stock.landed.cost"
+            string="Print Excel Report"
+            report_type="xlsx"
+            name="stock_landed_cost_excel_report.landed_cost_xlsx"
+            file="landed_cost_report"
+            attachment_use="False"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_landed_cost_manager,stock.landed.cost,stock_landed_costs.model_stock_landed_cost,landed_cost_manager,1,1,1,1
+access_product_manager,product.product,product.model_product_product,product_cost_manager,1,1,1,1
+access_message_creation,message.wizard,model_message_wizard,base.group_user,1,1,1,1
+access_cost_valuation_lines,cost.valuation.lines,model_cost_valuation_lines,base.group_user,1,1,1,1

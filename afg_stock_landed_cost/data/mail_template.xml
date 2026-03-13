@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Product Cost Approval Email -->
+        <record id="send_approval_mail" model="mail.template">
+            <field name="name">Product Cost Approval</field>
+            <field name="model_id" ref="afg_stock_landed_cost.model_product_product"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="email_from">${object.u_id.email or ''}</field>
+            <field name="email_to">${object.approver_user_id.email or '' }</field>
+            <field name="subject">Need Approved cost ${ object.name or '' }</field>
+            <field name="body_html" type="html">
+                <div class="body">
+                    <p>
+                        Hello Manager,
+                        <br/>
+                        <br/>
+                        This email is being sent to notify you we need to update the cost
+                        of this product with reference
+                        <strong>
+                            <t t-out="object.name"/>
+                        </strong>
+                        .
+                        <br/>
+                        <br/>
+                        Previous Cost:
+                        <t t-out="object.avg_cost"/>
+                        <br/>
+                        Updated Cost:
+                        <t t-out="object.standard_price"/>
+                        <br/>
+                        <br/>
+                        Kind regards,
+                        <br/>
+                        <strong>
+                            <t t-out="object.write_uid.name"/>
+                        </strong>
+                    </p>
+                </div>
+            </field>
+        </record>
+
+                <!-- Product Cost Approved Email -->
+                <record id="send_approved_mail" model="mail.template">
+                    <field name="name">Product Cost Approved</field>
+                    <field name="model_id" ref="afg_stock_landed_cost.model_product_product"/>
+                    <field name="auto_delete" eval="True"/>
+                    <field name="email_from">${object.approver_user_id.email or ''}</field>
+                    <field name="email_to">${object.user_approval_id.email or ''}</field>
+                    <field name="subject">Approved Cost ${object.name or ''}</field>
+                    <field name="body_html" type="html">
+                        <p>
+                            Hello User,
+                            <br/>
+                            <br/>
+                            The cost of this product
+                            <strong>
+                                <t t-out="object.name"/>
+                            </strong>
+                            has been approved.
+                            <br/>
+                            <br/>
+                            Previous Cost:
+                            <t t-out="object.avg_cost"/>
+                            <br/>
+                            Updated Cost:
+                            <t t-out="object.standard_price"/>
+                            <br/>
+                            <br/>
+                            Kind regards,
+                            <br/>
+                            <strong>
+                                <t t-out="object.write_uid.name"/>
+                            </strong>
+                        </p>
+                    </field>
+                </record>
+
+                <!-- Landed Cost Approval Email -->
+                <record id="send_landed_cost_approval_mail" model="mail.template">
+                    <field name="name">Landed Cost Approval</field>
+                    <field name="model_id" ref="afg_stock_landed_cost.model_stock_landed_cost"/>
+                    <field name="auto_delete" eval="True"/>
+                    <field name="email_from">${ object.user_id.email_formatted or user.email_formatted or '' }</field>
+                    <field name="email_to">${ object.company_id.email_formatted }</field>
+                    <field name="subject">Landed Cost Approval for ${object.name or ''}</field>
+                    <field name="body_html" type="html">
+                        <div>
+                            <p>
+                                Hello Manager,
+                                <br/>
+                                <br/>
+                                Approval is required to validate the landed cost
+                                for bill
+                                <strong>
+                                    <t t-out="object.vendor_bill_id.name"/>
+                                </strong>
+                                .
+                                <br/>
+                                <br/>
+                                Kind regards,
+                                <br/>
+                                <strong>
+                                    <t t-out="object.write_uid.name"/>
+                                </strong>
+                            </p>
+                        </div>
+                    </field>
+                </record>
+
+                <!-- Landed Cost Reject Email -->
+                <record id="send_landed_cost_reject_mail" model="mail.template">
+                    <field name="name">Landed Cost Reject</field>
+                    <field name="model_id" ref="afg_stock_landed_cost.model_stock_landed_cost"/>
+                    <field name="auto_delete" eval="True"/>
+                    <field name="email_from">${object.company_id.email or ''}</field>
+                    <field name="email_to">${object.user_id.email or ''}</field>
+                    <field name="subject">Landed Cost Reject for ${object.name or ''}</field>
+                    <field name="body_html" type="html">
+                        <p>
+                            Hello User,
+                            <br/>
+                            <br/>
+                            Your landed cost approval request for bill
+                            <strong>
+                                <t t-out="object.vendor_bill_id.name"/>
+                            </strong>
+                            has been rejected.
+                            <br/>
+                            <br/>
+                            Kind regards,
+                            <br/>
+                            <t t-out="object.write_uid.name"/>
+                        </p>
+                    </field>
+                </record>
+
+                <!-- Landed Cost Approved Email -->
+                <record id="send_landed_cost_approved_mail" model="mail.template">
+                    <field name="name">Landed Cost Approved</field>
+                    <field name="model_id" ref="afg_stock_landed_cost.model_stock_landed_cost"/>
+                    <field name="auto_delete" eval="True"/>
+                    <field name="email_from">${object.company_id.email or ''}</field>
+                    <field name="email_to">${object.user_id.email or ''}</field>
+                    <field name="subject">Landed Cost Approved for ${object.name or ''}</field>
+                    <field name="body_html" type="html">
+                        <p>
+                            Hello User,
+                            <br/>
+                            <br/>
+                            The landed cost for bill
+                            <strong>
+                                <t t-out="object.vendor_bill_id.name"/>
+                                <!--                        ${object.vendor_bill_id.name}-->
+                            </strong>
+                            has been approved.
+                            <br/>
+                            <br/>
+                            Kind regards,
+                            <br/>
+                            <strong>
+                                <t t-out="object.write_uid.name"/>
+                            </strong>
+                        </p>
+                    </field>
+                </record>
+
+    </data>
+</odoo>

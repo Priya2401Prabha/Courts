@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <!-- TREE VIEW -->
+
+    <record id="view_product_report_tree_afg" model="ir.ui.view">
+        <field name="name">product.report.afg.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+
+            <list string="Product Analysis" create="0">
+                <header>
+                    <button name="action_open_sales_popup"
+                            string="Update Sale Values"
+                            type="object"
+                            class="btn-primary"/>
+                </header>
+                <field name="default_code" string="Product Code" optional="show"/>
+                <field name="name" string="Product Description" optional="show"/>
+                <field name="default_vendor_id" string="Vendor" optional="show"/>
+                <field name="brand_name" optional="show"/>
+                <field name="categ_id" optional="show"/>
+                <field name="qty_available" string="Stock Unit" optional="show"/>
+                <field name="onhand_valuation_value" string="Stock Value" optional="show"/>
+                <field name="weekly_sold_units" string="Week Sale unit" optional="show"/>
+                <field name="weekly_sold_value" string="Week Sale Value" optional="show"/>
+                <field name="sales_count" string="Total sale count" optional="show"/>
+                <field name="year_sold_units" string="YTD Sale unit" optional="show"/>
+                <field name="year_sold_value" string="YTD Sale Value" optional="show"/>
+                <field name="standard_price" string="Cost Price" optional="show"/>
+                <field name="list_price" string="Retail Price" optional="show"/>
+
+            </list>
+
+        </field>
+    </record>
+
+    <record id="view_product_sales_popup" model="ir.ui.view">
+        <field name="name">product.sales.popup</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <form string="Product sale Period" help="By default from date calculated based on today's date">
+                <group>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </group>
+
+                <footer>
+                    <button name="update_compute_sales"
+                            type="object"
+                            string="Update Values"
+                            class="btn-primary"/>
+
+                    <button string="Cancel"
+                            special="cancel"
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale.action_order_report_products" model="ir.actions.act_window">
+        <field name="view_mode">list</field>
+    </record>
+    <record id="action_product_report_afg" model="ir.actions.act_window">
+        <field name="name">Product Analysis</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_product_report_tree_afg"/>
+    </record>
+
+
+    <!-- MENU -->
+
+    <menuitem
+            id="menu_product_report_root_afg"
+            name="Product"
+            parent="stock.menu_warehouse_report"
+            sequence="90"
+            action="action_product_report_afg"/>
+
+
+</odoo>

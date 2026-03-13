@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Landed Cost Manager Group -->
+        <record id="landed_cost_manager" model="res.groups">
+            <field name="name">Landed Cost Manager</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+        </record>
+
+        <!-- Product Manager Group -->
+        <record id="product_cost_manager" model="res.groups">
+            <field name="name">Product Manager</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+        </record>
+    </data>
+</odoo>

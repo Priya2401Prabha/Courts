@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit Product Variant Easy Edit Form -->
+    <record id="afg_product_variant_easy_edit_view" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.easy.edit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group//group[@name='pricing']" position="inside">
+                <label for="avg_cost" string="Previous Avg Cost"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="avg_cost" readonly="1" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id'}"/>
+                </div>
+                <label for="landed_cost" string="Landed Cost"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="landed_cost" readonly="1" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id'}"/>
+                </div>
+                <label for="prev_landed_cost" string="Previous Landed Cost"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="prev_landed_cost" readonly="1" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id'}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Normal Product Form -->
+    <record id="afg_product_product_view_form_normal_inherit" model="ir.ui.view">
+        <field name="name">product.product.form.normal.inherit</field>
+        <field name="model">product.product</field>
+        <field name="priority">4</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <header>
+                <field name="approve_state" widget="statusbar" statusbar_visible="draft,approval,approved"/>
+                <button name="product_approved" string="Approved" type="object"
+                        invisible="approve_state != 'approval'"/>
+                <button name="product_approval" string="Approval" type="object"
+                        invisible="approve_state in ['approval','approved']"/>
+                <button name="reset_product_draft" string="Reset to Draft" type="object"
+                        invisible="approve_state in ['draft']"/>
+            </header>
+
+            <xpath expr="//group[@name='group_standard_price']//label[@for='standard_price']" position="attributes">
+                <attribute name="string">Cost/Average Cost</attribute>
+            </xpath>
+            <xpath expr="//div[@name='standard_price_uom']//field[@name='standard_price']" position="attributes">
+                <attribute name="string">Cost/Average Cost</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='standard_price_uom']" position="after">
+                <label for="avg_cost" string="Previous Avg Cost"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="avg_cost" readonly="1" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id'}"/>
+                </div>
+                <label for="landed_cost" string="Landed Cost"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="landed_cost" readonly="1" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id'}"/>
+                </div>
+                <label for="prev_landed_cost" string="Previous Landed Cost"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="prev_landed_cost" readonly="1" widget="monetary"
+                           options="{'currency_field': 'cost_currency_id'}"/>
+                </div>
+                <label for="approver_user_id"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="approver_user_id"/>
+                    <field name="user_approval_id" invisible="1"/>
+                </div>
+                <label for="approved_date"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="approved_date"/>
+                </div>
+                <label for="is_duty"/>
+                <div class="o_row col-5 pl-0">
+                    <field name="is_duty"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+    <table t-if="o.company_id.name == 'IMF'" class="table avoid-page-break-inside">
+        <colgroup>
+            <col style="width:20%;"/>
+            <col style="width:25%;"/>
+            <col style="width:25%;"/>
+            <col style="width:15%;"/>
+            <col style="width:15%;"/>
+        </colgroup>
+        <t t-if="o.tax_totals">
+            <style>
+                td {
+                border: 1px solid;
+                }
+            </style>
+            <t t-set="tax_totals" t-value="o.tax_totals"/>
+            <t t-set="currency" t-value="o.currency_id"/>
+            <t t-foreach="tax_totals['subtotals']" t-as="subtotal" t-if="o.company_id.name == 'IMF'">
+
+                <tr class="o_subtotal_imf">
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <span>
+                            <strong>Subtotal</strong>
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <span t-out="subtotal['base_amount_currency']"
+                              t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: currency}">
+                            27.00
+                        </span>
+                    </td>
+                </tr>
+            </t>
+        </t>
+        <!--</div>-->
+        <!--</div>-->
+    </table>
+</odoo>
